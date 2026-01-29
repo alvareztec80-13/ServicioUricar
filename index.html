@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicio Uricar | Ingeniería Automotriz & Atelier</title>
+    <!-- Fuentes: Cinzel (Lujo/Títulos) y Raleway (Moderno/Cuerpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Iconos Phosphor (Más elegantes que FontAwesome) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* --- 1. VARIABLES & RESET --- */
+        :root {
+            --bg-body: #0a0a0a;
+            --bg-card: #141414;
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            --accent: #c6a87c; /* Oro Viejo / Bronce */
+            --accent-hover: #e0c396;
+            --border: rgba(255, 255, 255, 0.08);
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Raleway', sans-serif;
+            --padding-section: 120px 8%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { width: 100%; height: auto; display: block; }
+
+        /* --- 2. TIPOGRAFÍA & UTILIDADES --- */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 80px;
+            max-width: 600px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: var(--bg-body);
+        }
+
+        /* --- 3. NAVEGACIÓN --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: background 0.4s ease, padding 0.4s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 8%;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .logo span { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        .hamburger { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-content {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards 0.5s;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* --- 5. ABOUT --- */
+        .about {
+            padding: var(--padding-section);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-img-container {
+            position: relative;
+        }
+
+        .about-img-container::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--accent);
+            z-index: -1;
+        }
+
+        .about-img-container img {
+            filter: grayscale(100%);
+            transition: filter 0.5s ease;
+        }
+
+        .about-img-container:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* --- 6. SERVICIOS (GRID) --- */
+        .services {
+            padding: var(--padding-section);
+            background: var(--bg-card);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            padding: 40px;
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+        }
+
+        .service-card i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* --- 7. GALERIA (MASONRY SIMPLE) --- */
+        .gallery {
+            padding: var(--padding-section);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item:nth-child(1) { grid-column: span 2; }
+        .gallery-item:nth-child(4) { grid-column: span 2; }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .overlay { opacity: 1; }
+        .overlay span { letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--accent); }
+
+        /* --- 8. CONTACTO --- */
+        .contact {
+            padding: var(--padding-section);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            background: linear-gradient(to right, #0a0a0a, #111);
+        }
+
+        .contact-details h3 { font-size: 1.5rem; margin-bottom: 30px; }
+        
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        .detail-row i { color: var(--accent); font-size: 1.2rem; }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group { position: relative; }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 15px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-bottom-color: var(--accent);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 50px 8%;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .about, .contact { grid-template-columns: 1fr; gap: 40px; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                background: #111;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: 0.4s ease;
+            }
+            .nav-links.active { right: 0; }
+            .hamburger { display: block; z-index: 1001; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .gallery-item:nth-child(n) { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVEGACIÓN -->
+    <nav id="navbar">
+        <a href="#" class="logo">SERVICIO<span>URICAR</span></a>
+        <div class="hamburger"><i class="ph ph-list"></i></div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#atelier">El Atelier</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#galeria">Colección</a></li>
+            <li><a href="#contacto">Cita Privada</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <span class="subtitle">Mecánica de Precisión & Estética</span>
+            <h1>LA EXCELENCIA <br> NO ES UN ACTO, ES UN HÁBITO.</h1>
+            <p>Servicio exclusivo para Porsche, Ferrari, BMW M y AMG.</p>
+            <a href="#contacto" class="btn">Agendar Diagnóstico</a>
+        </div>
+    </section>
+
+    <!-- ABOUT / EL ATELIER -->
+    <section id="atelier" class="about">
+        <div class="about-text">
+            <span class="subtitle">Filosofía</span>
+            <div class="section-header">
+                <h2>Ingeniería como Arte</h2>
+                <div style="width: 50px; height: 2px; background: var(--accent);"></div>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">
+                En Servicio Uricar, no somos simplemente mecánicos; somos curadores de la ingeniería automotriz. Con más de tres décadas de experiencia, entendemos que un vehículo de alto rendimiento requiere algo más que herramientas: requiere intuición, precisión quirúrgica y un respeto profundo por la máquina.
+            </p>
+            <p style="color: var(--text-muted);">
+                Nuestro taller está diseñado bajo estándares clínicos, libre de polvo y caos, donde cada tornillo tiene su lugar y cada cliente recibe una atención concierge personalizada.
+            </p>
+        </div>
+        <div class="about-img-container">
+            <img src="https://images.unsplash.com/photo-1486262715619-01b80258e0a2?q=80&w=2070&auto=format&fit=crop" alt="Mecánico trabajando en motor">
+        </div>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section id="servicios" class="services">
+        <div class="section-header" style="text-align: center; margin: 0 auto 60px auto;">
+            <span class="subtitle">Nuestras Especialidades</span>
+            <h2>Servicios Bespoke</h2>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="ph ph-engine"></i>
+                <h3>Ingeniería de Motor</h3>
+                <p>Reconstrucción completa y puesta a punto de motores de alto rendimiento, respetando las especificaciones de fábrica OEM.</p>
+            </div>
+            <div class="service-card">
+                <i class="ph ph-desktop-tower"></i>
+                <h3>Diagnóstico Computarizado</h3>
+                <p>Escaneo profundo con software oficial de marca para detectar anomalías invisibles al ojo humano.</p>
+            </div>
+            <div class="service-card">
+                <i class="ph ph-paint-brush-broad"></i>
+                <h3>Detailing & Cerámica</h3>
+                <p>Corrección de pintura, protección cerámica 9H y restauración de cueros interiores Connolly y Nappa.</p>
+            </div>
+            <div class="service-card">
+                <i class="ph ph-wrench"></i>
+                <h3>Suspensión y Frenos</h3>
+                <p>Calibración de sistemas de suspensión adaptativa y mantenimiento de sistemas de frenado carbono-cerámicos.</p>
+            </div>
+            <div class="service-card">
+                <i class="ph ph-shield-check"></i>
+                <h3>Blindaje Ligero</h3>
+                <p>Mantenimiento a sistemas de seguridad y vidrios balísticos sin comprometer la estética del vehículo.</p>
+            </div>
+            <div class="service-card">
+                <i class="ph ph-car-profile"></i>
+                <h3>Concierge Service</h3>
+                <p>Servicio de recolección y entrega en plataforma cerrada (flat-bed) para garantizar la privacidad y seguridad.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section id="galeria" class="gallery">
+        <div class="section-header">
+            <span class="subtitle">Portfolio</span>
+            <h2>Obras Recientes</h2>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1503376763036-066120622c74?q=80&w=2070&auto=format&fit=crop" alt="Porsche 911">
+                <div class="overlay"><span>Restauración 911</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1627454819213-17727e615e27?q=80&w=2070&auto=format&fit=crop" alt="Interior Cuero">
+                <div class="overlay"><span>Interior Detailing</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1974&auto=format&fit=crop" alt="BMW M Performance">
+                <div class="overlay"><span>Tuning Motor</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2000&auto=format&fit=crop" alt="Mercedes AMG">
+                <div class="overlay"><span>Diagnóstico AMG</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2070&auto=format&fit=crop" alt="Mustang Classic">
+                <div class="overlay"><span>Clásicos</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="contact">
+        <div class="contact-details">
+            <span class="subtitle">Contacto</span>
+            <h3>Visite nuestro Santuario</h3>
+            <p style="color: #888; margin-bottom: 40px;">
+                Atendemos exclusivamente con cita previa para garantizar la privacidad y dedicación que su vehículo merece.
+            </p>
+            
+            <div class="detail-row">
+                <i class="ph ph-map-pin"></i>
+                <span>Av. Presidente Masaryk 510, Polanco, CDMX.</span>
+            </div>
+            <div class="detail-row">
+                <i class="ph ph-phone"></i>
+                <span>+52 (55) 8900 - 1234</span>
+            </div>
+            <div class="detail-row">
+                <i class="ph ph-envelope-simple"></i>
+                <span>atencionacliente@serviciouricar.com.mx</span>
+            </div>
+            <div class="detail-row">
+                <i class="ph ph-clock"></i>
+                <span>Lun - Vie: 09:00 - 19:00 / Sáb: 10:00 - 14:00</span>
+            </div>
+        </div>
+
+        <div class="contact-form">
+            <form>
+                <div class="input-group">
+                    <input type="text" placeholder="Nombre Completo" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Correo Electrónico" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" placeholder="Marca y Modelo del Vehículo" required>
+                </div>
+                <div class="input-group">
+                    <select style="color: #888;">
+                        <option>Seleccione el Servicio</option>
+                        <option>Mantenimiento Preventivo</option>
+                        <option>Reparación Mayor</option>
+                        <option>Detailing & Estética</option>
+                        <option>Otro</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <textarea rows="4" placeholder="Detalles de la solicitud..."></textarea>
+                </div>
+                <button type="submit" class="btn">Confirmar Solicitud</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div>&copy; 2024 Servicio Uricar. Todos los derechos reservados.</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Privacidad</a>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const icon = hamburger.querySelector('i');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            if(navLinks.classList.contains('active')) {
+                icon.classList.remove('ph-list');
+                icon.classList.add('ph-x');
+            } else {
+                icon.classList.remove('ph-x');
+                icon.classList.add('ph-list');
+            }
+        });
+
+        // Smooth Scroll for Anchors
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                navLinks.classList.remove('active'); // Close mobile menu if open
+                if(icon.classList.contains('ph-x')) {
+                    icon.classList.remove('ph-x');
+                    icon.classList.add('ph-list');
+                }
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
